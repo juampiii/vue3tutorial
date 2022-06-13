@@ -2,18 +2,18 @@
     <div class="user-profile">
         <div class="user-profile__sidebar">
             <div class="user-profile__user-panel">
-                <h1 class="user-profile__username">@{{ user.username }}</h1>
-                <div class="user-profile__admin-badge" v-if="user.isAdmin">Admin</div>
+                <h1 class="user-profile__username">@{{ state.user.username }}</h1>
+                <div class="user-profile__admin-badge" v-if="state.user.isAdmin">Admin</div>
                 <div class="user-profile__follower-count">
                     <strong>Followers:</strong> {{ followers }}
-                </div>               
+                </div>
+                <CreateTwootPanel @add-twoot="addTwoot"></CreateTwootPanel>
             </div>
-             <CreateTwootPanel @add-twoot="addTwoot"></CreateTwootPanel>
         </div>
 
         <div class="user-profile__twoots-wapper">
 
-            <TwootItem v-for="[id, twoot] in allTwoots" :key="id" :username="user.username" :twoot="twoot"
+            <TwootItem v-for="[id, twoot] in allTwoots" :key="id" :username="state.user.username" :twoot="twoot"
                 :twootId="id" />
         </div>
     </div>
@@ -22,10 +22,13 @@
 <script>
 import TwootItem from './TwootItem.vue';
 import CreateTwootPanel from './CreateTwootPanel.vue';
+
+import { computed, reactive } from 'vue';
 export default {
     name: "UsersProfile",
-    data() {
-        return {
+    components: { TwootItem, CreateTwootPanel },
+    setup() {
+        const state = new reactive({
             followers: 0,
             user: {
                 id: 1,
@@ -35,24 +38,26 @@ export default {
                 email: "juanpablo@nitsnets.com",
                 isAdmin: true,
                 twoots: new Map()
-            },
+            }
+        });
+
+        const allTwoots = computed(() => state.user.twoots)
+
+        function addTwoot(newTwoot) {
+          state.user.twoots.set(state.user.twoots.size + 1, newTwoot);
+        }
+
+        return {
+            state,
+            allTwoots,
+            addTwoot
         };
     },
-    computed: {
-        allTwoots() {
-            return this.user.twoots;
-        }
-    },
-    methods: {
-        addTwoot(newTwoot) {
-            this.user.twoots.set(this.user.twoots.size + 1, newTwoot);
-        }
-    },
     mounted() {
-        this.user.twoots.set(1, "Hello world");
-        this.user.twoots.set(2, "Such a wonderfull language!");
+        this.addTwoot("Hello world");
+        this.addTwoot("Such a wonderfull language!");
     },
-    components: { TwootItem, CreateTwootPanel }
+    
 };
 </script>
 
@@ -66,8 +71,8 @@ export default {
     .user-profile__user-panel {
         display: flex;
         flex-direction: column;
-        margin-right: 50px;
         padding: 20px;
+        margin-right: 50px;
         background-color: white;
         border-radius: 5px;
         border: 1px solid #DFE3E8;

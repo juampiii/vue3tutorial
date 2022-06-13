@@ -12,7 +12,20 @@
 </template>
 
 <script>
+// import { reactive } from 'vue'
 export default {
+    // setup(props) {
+    //     const state = reactive({
+    //         username: props.username,
+    //         twoot: props.twoot,
+    //         twootId: props.twootId,
+    //     })
+
+    // return{
+    //     state
+    // }
+
+    // },
     name: "TwootItem",
     props: {
         username: {
@@ -41,7 +54,7 @@ export default {
     cursor: pointer;
     transition: all 0.25s ease;
 
-    .twoot-item:hover {
+    &:hover {
         transform: scale(1.1, 1.1);
     }
 

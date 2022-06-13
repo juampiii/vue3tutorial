@@ -6,8 +6,8 @@
           Twotter
         </div>
       </router-link>
-      <div class="navigation__user" v-if="user">
-        {{ user.username }}
+      <div class="navigation__user" v-if="status.user">
+        {{ status.user.username }}
       </div>
     </nav>
     <UsersProfile />
@@ -16,17 +16,19 @@
 
 <script>
 import UsersProfile from "./components/UsersProfile.vue";
+import { reactive } from "vue";
 export default {
   name: "App",
   components: {
     UsersProfile
   },
-  data() {
-    return {
+  setup() {
+    const status = reactive({
       user: {
         username: '_Juampii'
       }
-    }
+    })
+    return { status }
   }
 };
 </script>
