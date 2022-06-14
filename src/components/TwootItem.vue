@@ -5,7 +5,7 @@
                 @{{ username }}
             </div>
             <div class="twoot-item__content">
-                {{ twoot }}
+                {{ twoot.content }}
             </div>
         </div>
     </div>
@@ -33,11 +33,7 @@ export default {
             required: true
         },
         twoot: {
-            type: String,
-            required: true
-        },
-        twootId: {
-            type: Number,
+            type: Object,
             required: true
         }
     }

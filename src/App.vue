@@ -6,29 +6,26 @@
           Twotter
         </div>
       </router-link>
-      <div class="navigation__user" v-if="status.user">
-        {{ status.user.username }}
+      <div class="navigation__user" v-if="user">
+        {{ user.username }}
       </div>
     </nav>
-    <UsersProfile />
+    <router-view />
   </div>
 </template>
 
 <script>
-import UsersProfile from "./components/UsersProfile.vue";
-import { reactive } from "vue";
+import { computed } from '@vue/runtime-core';
+import { useStore } from 'vuex';
 export default {
   name: "App",
-  components: {
-    UsersProfile
-  },
   setup() {
-    const status = reactive({
-      user: {
-        username: '_Juampii'
-      }
-    })
-    return { status }
+    const store = useStore();
+    const user = computed(() => store.state.User.user);
+
+    return { 
+      user
+    }
   }
 };
 </script>

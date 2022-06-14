@@ -5,59 +5,48 @@
                 <h1 class="user-profile__username">@{{ state.user.username }}</h1>
                 <div class="user-profile__admin-badge" v-if="state.user.isAdmin">Admin</div>
                 <div class="user-profile__follower-count">
-                    <strong>Followers:</strong> {{ followers }}
+                    <strong>Followers:</strong> {{ state.followers }}
                 </div>
-                <CreateTwootPanel @add-twoot="addTwoot"></CreateTwootPanel>
+                <CreateTwootPanel @add-twoot="addTwoot" />
+
             </div>
         </div>
 
         <div class="user-profile__twoots-wapper">
 
-            <TwootItem v-for="[id, twoot] in allTwoots" :key="id" :username="state.user.username" :twoot="twoot"
-                :twootId="id" />
+            <TwootItem v-for="twoot in state.user.twoots" :key="twoot.id" :username="state.user.username" :twoot="twoot" />
         </div>
     </div>
 </template>
 
 <script>
-import TwootItem from './TwootItem.vue';
-import CreateTwootPanel from './CreateTwootPanel.vue';
-
+import TwootItem from '../components/TwootItem.vue';
+import CreateTwootPanel from "../components/CreateTwootPanel";
+import { users } from "../assets/users";
 import { computed, reactive } from 'vue';
+import { useRoute } from 'vue-router';
 export default {
     name: "UsersProfile",
     components: { TwootItem, CreateTwootPanel },
     setup() {
+        const route = useRoute();
+        const userId = computed(() => route.params.userId)
+
         const state = new reactive({
-            followers: 0,
-            user: {
-                id: 1,
-                username: "Juampi",
-                firstName: "Juan Pablo",
-                lastName: "Rodríguez V.",
-                email: "juanpablo@nitsnets.com",
-                isAdmin: true,
-                twoots: new Map()
-            }
+            followers: 10,
+            user: users[userId.value -1] || users[1]
         });
 
-        const allTwoots = computed(() => state.user.twoots)
-
         function addTwoot(newTwoot) {
-          state.user.twoots.set(state.user.twoots.size + 1, newTwoot);
+            state.user.twoots.unshift({ id: state.user.twoots.length + 1, content: newTwoot });
         }
 
         return {
             state,
-            allTwoots,
             addTwoot
         };
-    },
-    mounted() {
-        this.addTwoot("Hello world");
-        this.addTwoot("Such a wonderfull language!");
-    },
-    
+    }
+
 };
 </script>
 

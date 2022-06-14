@@ -1,7 +1,24 @@
-{
-    "users": [
+export const users = [
         {
             "id": 1,
+            "username": "Juampi",
+            "firstName": "Juan Pablo",
+            "lastName": "Rodríguez V.",
+            "email": "juanpablo@nitsnets.com",
+            "isAdmin": true,
+            "twoots": [
+                {
+                    "id": 1,
+                    "content": "Twotter is Amazing!"
+                },
+                {
+                    "id": 2,
+                    "content": "Such a wonderfull language!"
+                }
+            ]
+        },
+        {
+            "id": 17,
             "username": "_MitchellRomney",
             "firstName": "Mitchell",
             "lastName": "Romney",
@@ -46,4 +63,3 @@
             "twoots": []
         }
     ]
-}
